@@ -9,8 +9,8 @@ ifeq ($(shell uname), Linux)
 	EXE_SUFFIX =
 	OSFLAG = -D LINUX
 else ifeq ($(shell uname), Darwin)
-	USBFLAGS=$(shell libusb-config --cflags || libusb-legacy-config --cflags)
-	USBLIBS=$(shell libusb-config --libs || libusb-legacy-config --libs)
+	USBFLAGS=$(shell PKG_CONFIG_PATH=$(brew cellar libusb)/lib/pkgconfig pkg-config --cflags libusb-1.0 || libusb-config --cflags || libusb-legacy-config --cflags)
+	USBLIBS=$(shell PKG_CONFIG_PATH=$(brew cellar libusb)/lib/pkgconfig pkg-config --libs libusb-1.0 || libusb-config --libs || libusb-legacy-config --libs)
 	EXE_SUFFIX =
 	OSFLAG = -D MAC_OS
 	# Uncomment these to create a static binary:
