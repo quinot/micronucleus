@@ -26,9 +26,9 @@ script: |-
       osx)
          make USBFLAGS=$(shell PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --cflags libusb) \
               USBLIBS=$(shell PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --libs libusb)
+         ;;
       windows)
-         mingw32-make
-         # USBFLAGS="-I/mingw64/include" USBLIBS="-L/mingw64/lib -lusb0"
+         make
          ;;
       freebsd)
          gmake
@@ -47,7 +47,7 @@ before_install:
         export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
         export mingw64="$msys2 -mingw64 -full-path -here -c \$\* --"
         export msys2+=" -msys2 -c \$\* --"
-        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain make
         ## Install more MSYS2 packages from https://packages.msys2.org/base here
         $msys2 pacman -S mingw-w64-x86_64-libusb-win32
         taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
