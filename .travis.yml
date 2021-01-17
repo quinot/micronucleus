@@ -10,7 +10,7 @@ before_install:
          sudo apt-get install -y libusb-dev
          ;;
       osx)
-         sudo brew install libusb
+         brew install libusb
          ;;
       windows)
         [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
