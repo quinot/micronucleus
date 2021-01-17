@@ -24,7 +24,7 @@ script: |-
               USBLIBS=$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --libs libusb)
          ;;
       windows)
-         $MAKE
+         $MAKE USBLIBS=-lusb0
          ;;
       freebsd)
          gmake
