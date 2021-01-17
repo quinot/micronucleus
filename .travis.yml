@@ -3,10 +3,6 @@ matrix:
   include:
     - os: windows
     - os: osx
-      addons:
-        homebrew:
-          packages:
-            libusb-compat
     - os: linux
       addons:
         apt:
@@ -38,6 +34,9 @@ script: |-
 before_install:
 - |-
     case $TRAVIS_OS_NAME in
+      osx)
+        brew install libusb-compat
+        ;;
       windows)
         [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
         choco uninstall -y mingw
