@@ -2,7 +2,6 @@ language: c
 matrix:
   include:
     - os: osx
-    - os: windows
     - os: linux
       addons:
         apt:
