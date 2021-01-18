@@ -65,7 +65,7 @@ before_deploy:
       # Set up git user name and tag this commit
       - git config --local user.name "Micronucleus Buildbot"
       - git config --local user.email "autobuild@cloud"
-      - if [ -z "${TRAVIS_TAG}" ]; then export TRAVIS_TAG=${TRAVIS_BRANCH}-LATEST; git tag $TRAVIS_TAG; fi
+      - if [ -z "${TRAVIS_TAG}" ]; then export TRAVIS_TAG=${TRAVIS_BRANCH}-LATEST; git tag -f $TRAVIS_TAG; fi
 
 deploy:
   provider: releases
