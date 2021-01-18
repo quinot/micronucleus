@@ -41,6 +41,7 @@ script: |-
          ;;
     esac
     export ZIPFILE=micronucleus-$(uname -m)-${TRAVIS_OS_NAME}.zip
+    if [ -n "$ZIPLIB" ]; then cp "$ZIPLIB"; ZIPLIB=$(basename "$ZIPLIB"); fi
     zip $ZIPFILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
 
 before_install:
