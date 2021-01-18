@@ -22,6 +22,7 @@ matrix:
             - zip
 script: |-
     cd commandline
+    ZIP=zip
     case $TRAVIS_OS_NAME in
       linux)
          make
@@ -35,6 +36,7 @@ script: |-
          $MAKE USBLIBS=-lusb0
          ZIPLIB=/mingw64/bin/libusb*.dll
          EXE_EXT=.exe
+         ZIP=/usr/bin/zip
          ;;
       freebsd)
          gmake
@@ -42,7 +44,7 @@ script: |-
     esac
     export ZIPFILE=micronucleus-$(uname -m)-${TRAVIS_OS_NAME}.zip
     if [ -n "$ZIPLIB" ]; then cp "$ZIPLIB"; ZIPLIB=$(basename "$ZIPLIB"); fi
-    zip $ZIPFILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
+    $ZIP $ZIPFILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
 
 before_install:
 - |-
