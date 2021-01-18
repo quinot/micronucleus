@@ -29,17 +29,19 @@ script: |-
       osx)
          make USBFLAGS=$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --cflags libusb) \
               USBLIBS="$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --libs libusb) -lusb"
+         ZIPLIB=$(find $(brew --prefix libusb-compat)/lib -name "*dylib" -type f -depth 1)
          ;;
       windows)
          $MAKE USBLIBS=-lusb0
+         ZIPLIB=/mingw64/bin/libusb*.dll
          EXE_EXT=.exe
          ;;
       freebsd)
          gmake
          ;;
     esac
-    export ZIPFILE=micronucleus-${TRAVIS_CPU_ARCH}-${TRAVIS_OS_NAME}.zip
-    zip $ZIPFILE micronucleus${EXE_EXT}
+    export ZIPFILE=micronucleus-$(uname -m)-${TRAVIS_OS_NAME}.zip
+    zip $ZIPFILE micronucleus${EXE_EXT} $ZIPLIB
 
 before_install:
 - |-
@@ -53,7 +55,7 @@ before_install:
         export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
         export mingw64="$msys2 -mingw64 -full-path -here -c \$\* --"
         export msys2+=" -msys2 -c \$\* --"
-        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain make mingw-w64-x86_64-libusb-win32
+        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain make zip mingw-w64-x86_64-libusb-win32
         ## Install more MSYS2 packages from https://packages.msys2.org/base here
         # taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
         export PATH=/C/tools/msys64/mingw64/bin:$PATH
