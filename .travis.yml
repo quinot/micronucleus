@@ -1,4 +1,5 @@
 language: c
+if: NOT(tag =~ /.*-LATEST/)
 matrix:
   include:
     - os: windows
