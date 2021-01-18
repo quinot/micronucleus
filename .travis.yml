@@ -18,6 +18,7 @@ matrix:
         pkg:
           packages:
             - gmake
+            - zip
 script: |-
     cd commandline
     case $TRAVIS_OS_NAME in
@@ -68,11 +69,12 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-      secure: "TvMUgZ64Qi29a2NW9Nt5cKSzmaT/+h9a7A9oeOlH+A5h/iD+JbqijfBGOhbaPLVm5EchV/TbxjsJz4yhvKeau7mSoee0x5vfv7uii2IBV8C6ZJFiQMIG0JDUiR80rxgWO6YEnwjDEtlQ3g5AfHZUuvy9NT6RaeU4J0N71bPJdclhsefQJLm2oqBFgNdUO9zg5WZblWc55HaFiymBy5WGEbI3ESmZxr1zmAU0Y2McYtanspGynMXVYVsfIUkOM2+97Yj5JkJNDS4Hm7z++hWyToRrAnIsXe1R2BUtDvwR4RXi4aVOFNxL+oRkQE6uzqLu/hcHDuGzOvjMktuYHCzcqDQm8rCcc5nHqEqwnyLcvSk1/6Xlu0Wr5Ahlsbkerg7fqqhyUhfQ7PkA/MFtbtELSm/9/6zGimLXP4FPvpwnptd4IQNy+BPm3vQ78Kr0UGWiABkwURdsyCD990BBSf1iDPxwTEAOhc1lEiFXz8lBG22CRi/TZoubxlgn2xlvkDPCEx5m8tGQmdonJW3DAbEbFwc5YDc2xeqr7z8n83nLVJU0ZjDOb4+3pb3B7newOMk616ozQxuQwSVG79yiLKaoIGJ4EyHKCPp5EdKDopQroHf/KMpavxJ3SAjfDTjAy97rzLT2abBVOsOStg7bxxEYudYzrjfWSKJRcEulKhBnOIg="
+    secure: A6Yhb0HGscoE20bHmcvgRSNyFgjOioU2A07vdvFqJrha785wo0ut4r1FZJeH/seVv9/OOXcokL0yu+R+CzJBtzcv1K0+7zlCxBiWxAnR1hH0NqyGVZyuJO9M/n9/AXGOGvTunQadOCHlWpENB7SKs2NwkD2+7oeChGSGeUEWUg0Ld2nVtdHYTk7dMne4fYk/LSlMgxQer7VTHkCfYiwMU98P1EUDzENbV1osfkgoAIMzQEdSzPhjoK3x4PjCSw3b5+X9hYGyWpa2ixrIKLW1icCCmQ8cXzYi9chhad6T3wWXsO23azHF/G6XDi+s1JK5EiBUNuoh3QtnQI7SJdb5tQ0aRmzKcNX3SHpnpTym8/r3YzpH3pperbJnpOmg7d9JuuGyPTAQtcGAGzBSu1WuxtEmfdwup5WKzgxt6yu3HaSJjJZNGpoF6iw630CpWc2uyXNls8fHA+8nATFhj8g52H6qrOykAlWpghY6WKXJXLxTbNSNwhg/ym1xafMhsLoznzWPqjQNuPAB2OTwx37xz6uDl8Z1yTIEuTOXtnX4gtGMPRhnhAhRqCsepAqOkfXj4tCu029k50gu7zpcT97UbriqcKTyd/0iyRjgPk5Z7hv8z1ChnahYw2bEb1yCcogjSBlceVKwqbUI38+9y9KX/vjt+rC4klT4z6OSsP9YVCI=
   file: "$ZIPFILE"
   overwrite: true
   skip_cleanup: true
   on:
+      all_branches: true
       condition: -n "${TRAVIS_TAG}"
 
 before_cache:
