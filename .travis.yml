@@ -75,7 +75,6 @@ deploy:
   skip_cleanup: true
   on:
       all_branches: true
-      condition: "\"${TRAVIS_PULL_REQUEST}\" = false"
 
 before_cache:
 - |-
