@@ -30,11 +30,14 @@ script: |-
          ;;
       windows)
          $MAKE USBLIBS=-lusb0
+         EXE_EXT=.exe
          ;;
       freebsd)
          gmake
          ;;
     esac
+    export ZIPFILE=micronucleus-${TRAVIS_CPU_ARCH}-${TRAVIS_OS_NAME}.zip
+    zip ../$ZIPFILE micronucleus${EXE_EXT}
 
 before_install:
 - |-
@@ -55,6 +58,22 @@ before_install:
         export MAKE=mingw32-make  # so that Autotools can find it
         ;;
     esac
+
+before_deploy:
+      # Set up git user name and tag this commit
+      - git config --local user.name "Micronucleus Buildbot"
+      - git config --local user.email "autobuild@cloud"
+      - if [ -z "${TRAVIS_TAG}" -a "${TRAVIS_PULL_REQUEST}" = false ]; then export TRAVIS_TAG=${TRAVIS_BRANCH}-LATEST; git tag $TRAVIS_TAG; fi
+
+deploy:
+  provider: releases
+  api_key:
+      secure: "TvMUgZ64Qi29a2NW9Nt5cKSzmaT/+h9a7A9oeOlH+A5h/iD+JbqijfBGOhbaPLVm5EchV/TbxjsJz4yhvKeau7mSoee0x5vfv7uii2IBV8C6ZJFiQMIG0JDUiR80rxgWO6YEnwjDEtlQ3g5AfHZUuvy9NT6RaeU4J0N71bPJdclhsefQJLm2oqBFgNdUO9zg5WZblWc55HaFiymBy5WGEbI3ESmZxr1zmAU0Y2McYtanspGynMXVYVsfIUkOM2+97Yj5JkJNDS4Hm7z++hWyToRrAnIsXe1R2BUtDvwR4RXi4aVOFNxL+oRkQE6uzqLu/hcHDuGzOvjMktuYHCzcqDQm8rCcc5nHqEqwnyLcvSk1/6Xlu0Wr5Ahlsbkerg7fqqhyUhfQ7PkA/MFtbtELSm/9/6zGimLXP4FPvpwnptd4IQNy+BPm3vQ78Kr0UGWiABkwURdsyCD990BBSf1iDPxwTEAOhc1lEiFXz8lBG22CRi/TZoubxlgn2xlvkDPCEx5m8tGQmdonJW3DAbEbFwc5YDc2xeqr7z8n83nLVJU0ZjDOb4+3pb3B7newOMk616ozQxuQwSVG79yiLKaoIGJ4EyHKCPp5EdKDopQroHf/KMpavxJ3SAjfDTjAy97rzLT2abBVOsOStg7bxxEYudYzrjfWSKJRcEulKhBnOIg="
+  file: "$ZIPFILE"
+  overwrite: true
+  skip_cleanup: true
+  on:
+      condition: -n "${TRAVIS_TAG}"
 
 before_cache:
 - |-
