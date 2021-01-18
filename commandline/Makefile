@@ -46,7 +46,7 @@ EXAMPLES = micronucleus
 
 .PHONY:	clean library
 
-all: library $(EXAMPLES)
+all: library launcher$(EXE_SUFFIX) $(EXAMPLES)
 	rm -f *.o
 
 library: $(LWLIBS)
@@ -58,6 +58,9 @@ $(LWLIBS):
 $(EXAMPLES): $(addsuffix .o, $(LWLIBS))
 	@echo Building command line tool: $@...
 	$(CC) $(CFLAGS) -o $@$(EXE_SUFFIX) $@.c $^ $(LIBS)
+
+launcher$(EXE_SUFFIX): avr-dummy/avrdude-dummy.cpp
+	$(CXX) -o $@ $^
 
 clean:
 	rm -f $(EXAMPLES)$(EXE_SUFFIX) *.o *.exe
