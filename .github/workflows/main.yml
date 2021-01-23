@@ -6,9 +6,9 @@ on:
 
 jobs:
   build-all:
-      strategy:
-          matrix:
-              os: [ ubuntu-latest, windows-2019, macos-latest ]
+    strategy:
+      matrix:
+         os: [ ubuntu-latest, windows-2019, macos-latest ]
     runs-on: ${{ matrix.os }}
     env:
       BUILD_OS: ${{ runner.os }}
