@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build CLI tools
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
-      run: apt-get update && apt-get install libusb-dev 
+      run: sudo "apt-get update && apt-get install libusb-dev"
     - name: make
       run: cd commandline && make
 
