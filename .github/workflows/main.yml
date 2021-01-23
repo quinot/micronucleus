@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
-      run: sudo "apt-get update && apt-get install libusb-dev"
+      run: sudo sh -c "apt-get update && apt-get install libusb-dev"
     - name: make
       run: cd commandline && make
 
