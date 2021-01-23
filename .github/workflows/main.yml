@@ -16,6 +16,7 @@ jobs:
       run: cd commandline && make
 
   build-windows:
+    if: false
     runs-on: windows-2019
     steps:
     - uses: msys2/setup-msys2@v2
@@ -27,7 +28,17 @@ jobs:
     - name: make
       shell: msys2 {0}
       run: |
-          ls -l /
-          pacman -Ql mingw-w64-x86_64-libusb-win32
-          gcc -print-search-dirs
           cd commandline && mingw32-make USBLIBS=-lusb0
+
+  build-osx:
+    runs-on: macos-latest
+    steps:
+    - name: install dependencies
+      run: brew install libusb-compat
+    - uses: actions/checkout@v2
+    - name: make
+      run: |
+          cd commandline
+          make USBFLAGS=$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --cflags libusb) \
+            USBLIBS="$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --libs libusb) -lusb"
+
