@@ -5,12 +5,23 @@ on:
     branches: [ gh-actions ]
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: install dependencies
       run: sudo sh -c "apt-get update && apt-get install libusb-dev"
+    - uses: actions/checkout@v2
     - name: make
       run: cd commandline && make
 
+  build-windows:
+    runs-on: windows-2019
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: MSYS
+        install: git base-devel binutils mingw-w64-x86_64-toolchain make zip mingw-w64-x86_64-libusb-win32
+        update: true
+    - uses: actions/checkout@v2
+    - name: make
+      run: cd commandline && mingw32-make USBLIBS=-lusb0
