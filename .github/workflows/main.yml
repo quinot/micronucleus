@@ -5,50 +5,29 @@ on:
     branches: [ gh-actions ]
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  build-all:
+      strategy:
+          matrix:
+              os: [ ubuntu-latest, windows-2019, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    env:
+      BUILD_OS: ${{ runner.os }}
     steps:
     - name: install dependencies
       run: sudo sh -c "apt-get update && apt-get install libusb-dev"
-    - uses: actions/checkout@v2
-    - name: make
-      run: |
-          cd commandline
-          make
-          git clone https://github.com/digistump/avr-dummy
-          g++ -o launcher avr-dummy/avrdude-dummy.cpp
-          sh -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
+      if: runner.os == "Linux"
 
-  build-windows:
-    runs-on: windows-2019
-    steps:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
         install: git base-devel binutils mingw-w64-x86_64-toolchain make zip mingw-w64-x86_64-libusb-win32
         update: true
-    - uses: actions/checkout@v2
-    - name: make
-      shell: msys2 {0}
-      run: |
-          cd commandline
-          mingw32-make USBLIBS=-lusb0
-          git clone https://github.com/digistump/avr-dummy
-          g++ -o launcher.exe avr-dummy/avrdude-dummy.cpp
-          ZIPLIB=/mingw64/bin/libusb*.dll EXE_EXT=.exe sh -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
+      if: runner.os == "Windows"
 
-  build-osx:
-    runs-on: macos-latest
-    steps:
     - name: install dependencies
       run: brew install libusb-compat
+      if: runner.os == "macOS"
+
     - uses: actions/checkout@v2
     - name: make
-      run: |
-          cd commandline
-          make USBFLAGS=$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --cflags libusb) \
-            USBLIBS="$(PKG_CONFIG_PATH=$(brew --prefix libusb-compat)/lib/pkgconfig pkg-config --libs libusb) -lusb"
-          git clone https://github.com/digistump/avr-dummy
-          g++ -o launcher avr-dummy/avrdude-dummy.cpp
-          ZIPLIB=$(find $(brew --prefix libusb-compat)/lib -name "*dylib" -type f -depth 1) sh -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
-
+      run: sh -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
