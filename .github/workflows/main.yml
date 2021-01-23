@@ -27,10 +27,25 @@ jobs:
       if: runner.os == 'macOS'
 
     - uses: actions/checkout@v2
+
+    - name: set shell
+      id: set_shell
+      shell: bash
+      run: |
+          case ${{ runner.os }} in
+            Windows)
+              BUILD_SHELL="msys2 {0}"
+              ;;
+            *)
+              BUILD_SHELL=bash
+              ;;
+          esac
+          echo "::set-output name=BUILD_SHELL::$BUILD_SHELL"
+
     - name: make
       env:
         BUILD_OS: ${{ runner.os }}
-      shell: bash
+      shell: ${{ steps.set_shell.outputs.BUILD_SHELL }}
       run: |
           set -x
           source $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
