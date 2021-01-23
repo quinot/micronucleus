@@ -20,9 +20,14 @@ jobs:
     steps:
     - uses: msys2/setup-msys2@v2
       with:
-        msystem: MSYS
+        msystem: MINGW64
         install: git base-devel binutils mingw-w64-x86_64-toolchain make zip mingw-w64-x86_64-libusb-win32
         update: true
     - uses: actions/checkout@v2
     - name: make
-      run: cd commandline && mingw32-make CFLAGS="-I/mingw64/include" USBLIBS=-lusb0
+      shell: msys2 {0}
+      run: |
+          ls -l /
+          pacman -Ql mingw-w64-x86_64-libusb-win32
+          gcc -print-search-dirs
+          cd commandline && mingw32-make USBLIBS=-lusb0
