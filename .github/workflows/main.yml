@@ -1,0 +1,16 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ gh-actions ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: apt-get update && apt-get install libusb-dev 
+    - name: make
+      run: cd commandline && make
+
