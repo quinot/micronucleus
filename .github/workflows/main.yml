@@ -7,6 +7,7 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    if: false
     steps:
     - name: install dependencies
       run: sudo sh -c "apt-get update && apt-get install libusb-dev"
@@ -24,4 +25,4 @@ jobs:
         update: true
     - uses: actions/checkout@v2
     - name: make
-      run: cd commandline && mingw32-make USBLIBS=-lusb0
+      run: cd commandline && mingw32-make CFLAGS="-I/mingw64/include" USBLIBS=-lusb0
