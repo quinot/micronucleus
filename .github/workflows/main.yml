@@ -30,4 +30,7 @@ jobs:
     - name: make
       env:
         BUILD_OS: ${{ runner.os }}
-      run: sh -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
+      shell: bash
+      run: |
+          set -x
+          source $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
