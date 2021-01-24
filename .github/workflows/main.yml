@@ -17,6 +17,9 @@ jobs:
              shell: msys2 {0}
 
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
     steps:
     - name: install dependencies
       run: sudo sh -c "apt-get update && apt-get install libusb-dev"
@@ -38,6 +41,5 @@ jobs:
     - name: make
       env:
         BUILD_OS: ${{ runner.os }}
-      shell: ${{ matrix.shell }}
       run: |
           bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
