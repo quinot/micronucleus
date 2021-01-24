@@ -1,5 +1,6 @@
 #! /bin/sh
 
+PKG_NAME=micronucleus-cli
 WORKSPACE_DIR=$(pwd)
 cd commandline
 
@@ -22,9 +23,11 @@ esac
 git clone https://github.com/digistump/avr-dummy
 g++ -o launcher${EXE_EXT} avr-dummy/avrdude-dummy.cpp
 
-RELEASE_FILE=micronucleus-$(uname -m)-$(uname -s).zip
-if [ -n "$ZIPLIB" ]; then eval "cp $ZIPLIB ."; ZIPLIB=$(basename "$ZIPLIB"); fi
-eval zip $WORKSPACE_DIR/$RELEASE_FILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
+RELEASE_FILE=$PKG_NAME-$(uname -m)-$(uname -s).zip
+mkdir $PKG_NAME
+if [ -n "$ZIPLIB" ]; then eval "cp -p $ZIPLIB $PKG_NAME"; ZIPLIB=$(basename "$ZIPLIB"); fi
+cp -p micronucleus${EXE_EXT} launcher${EXE_EXT} $PKG_NAME
+eval zip -r $WORKSPACE_DIR/$RELEASE_FILE $PKG_NAME
 
 ## Prepare release and artifact upload
 
