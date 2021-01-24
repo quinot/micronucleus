@@ -20,7 +20,6 @@ case $BUILD_OS in
     ;;
 esac
 
-git clone https://github.com/digistump/avr-dummy
 g++ -o launcher${EXE_EXT} avr-dummy/avrdude-dummy.cpp
 
 RELEASE_FILE=$PKG_NAME-$(uname -m)-$(uname -s).zip
