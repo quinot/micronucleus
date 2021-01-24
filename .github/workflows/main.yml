@@ -3,6 +3,9 @@ name: Build CLI tools
 on:
   push:
     branches: [ gh-actions ]
+    tags:
+        - '*'
+        - '!*-LATEST'
 
 jobs:
   build-all:
@@ -39,7 +42,27 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: make
+      id: make
       env:
         BUILD_OS: ${{ runner.os }}
       run: |
           bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
+
+    - name: Branch head release
+      uses: marvinpinto/action-automatic-releases@v1.1.0
+      if: steps.make.outputs.RELEASE_BRANCH != ''
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ steps.make.outputs.RELEASE_BRANCH }}-LATEST"
+        prerelease: true
+        title: "Development build on branch ${{ steps.make.outputs.RELEASE_BRANCH }}"
+        files: ${{ steps.make.outputs.RELEASE_FILE }}
+
+    - name: Tagged release
+      uses: marvinpinto/action-automatic-releases@v1.1.0
+      if: steps.make.outputs.RELEASE_TAG != ''
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        title: "Release build ${{ steps.make.outputs.RELEASE_TAG }}"
+        files: ${{ steps.make.outputs.RELEASE_FILE }}
