@@ -32,7 +32,7 @@ case $GITHUB_REF in
         RELEASE_TAG=$(basename $GITHUB_REF)
         ;;
     refs/heads/*)
-        RELEASE_BRANCH=$(basename $GITHUB_REF)-LATEST
+        RELEASE_BRANCH=$(basename $GITHUB_REF)
         ;;
 esac
 RELEASE_FILE=$(pwd)/$ZIPFILE

@@ -49,7 +49,7 @@ jobs:
           bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
 
     - name: Branch head release
-      uses: marvinpinto/action-automatic-releases@v1.1.0
+      uses: marvinpinto/action-automatic-releases@latest
       if: steps.make.outputs.RELEASE_BRANCH != ''
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -59,7 +59,7 @@ jobs:
         files: ${{ steps.make.outputs.RELEASE_FILE }}
 
     - name: Tagged release
-      uses: marvinpinto/action-automatic-releases@v1.1.0
+      uses: marvinpinto/action-automatic-releases@latest
       if: steps.make.outputs.RELEASE_TAG != ''
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
