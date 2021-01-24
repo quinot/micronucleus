@@ -21,9 +21,9 @@ esac
 git clone https://github.com/digistump/avr-dummy
 g++ -o launcher${EXE_EXT} avr-dummy/avrdude-dummy.cpp
 
-ZIPFILE=micronucleus-$(uname -m)-$(uname -s).zip
+RELEASE_FILE=micronucleus-$(uname -m)-$(uname -s).zip
 if [ -n "$ZIPLIB" ]; then eval "cp $ZIPLIB ."; ZIPLIB=$(basename "$ZIPLIB"); fi
-eval zip $ZIPFILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
+eval zip $GITHUB_WORKSPACE/$RELEASE_FILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
 
 ## Prepare release and artifact upload
 
@@ -35,7 +35,6 @@ case $GITHUB_REF in
         RELEASE_BRANCH=$(basename $GITHUB_REF)
         ;;
 esac
-RELEASE_FILE=$(pwd)/$ZIPFILE
 for release_item in TAG BRANCH FILE
 do
   eval echo "::set-output name=RELEASE_$release_item::\$RELEASE_$release_item"

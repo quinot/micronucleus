@@ -49,20 +49,21 @@ jobs:
           bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
 
     - name: Branch head release
-      uses: marvinpinto/action-automatic-releases@latest
+      uses: johnwbyrd/update-release@v1.0.0
       if: steps.make.outputs.RELEASE_BRANCH != ''
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ steps.make.outputs.RELEASE_BRANCH }}-LATEST"
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        release: "${{ steps.make.outputs.RELEASE_BRANCH }}-LATEST"
+        tag: "${{ steps.make.outputs.RELEASE_BRANCH }}-LATEST"
         prerelease: true
-        title: "Development build on branch ${{ steps.make.outputs.RELEASE_BRANCH }}"
+        message: "Development build on branch ${{ steps.make.outputs.RELEASE_BRANCH }}"
         files: ${{ steps.make.outputs.RELEASE_FILE }}
 
     - name: Tagged release
-      uses: marvinpinto/action-automatic-releases@latest
+      uses: johnwbyrd/update-release@v1.0.0
       if: steps.make.outputs.RELEASE_TAG != ''
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
-        title: "Release build ${{ steps.make.outputs.RELEASE_TAG }}"
+        message: "Release build ${{ steps.make.outputs.RELEASE_TAG }}"
         files: ${{ steps.make.outputs.RELEASE_FILE }}
