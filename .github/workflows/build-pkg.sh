@@ -1,5 +1,6 @@
 #! /bin/sh
 
+WORKSPACE_DIR=$(pwd)
 cd commandline
 
 case $BUILD_OS in
@@ -23,7 +24,7 @@ g++ -o launcher${EXE_EXT} avr-dummy/avrdude-dummy.cpp
 
 RELEASE_FILE=micronucleus-$(uname -m)-$(uname -s).zip
 if [ -n "$ZIPLIB" ]; then eval "cp $ZIPLIB ."; ZIPLIB=$(basename "$ZIPLIB"); fi
-eval zip $GITHUB_WORKSPACE/$RELEASE_FILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
+eval zip $WORKSPACE_DIR/$RELEASE_FILE micronucleus${EXE_EXT} launcher${EXE_EXT} $ZIPLIB
 
 ## Prepare release and artifact upload
 
