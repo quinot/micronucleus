@@ -8,7 +8,14 @@ jobs:
   build-all:
     strategy:
       matrix:
-         os: [ ubuntu-latest, windows-2019, macos-latest ]
+         includes:
+           - os: ubuntu-latest
+             shell: bash
+           - os: macos-latest
+             shell: bash
+           - os: windows-2019
+             shell: msys2 {0}
+
     runs-on: ${{ matrix.os }}
     steps:
     - name: install dependencies
@@ -28,24 +35,9 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: set shell
-      id: set_shell
-      shell: bash
-      run: |
-          case ${{ runner.os }} in
-            Windows)
-              BUILD_SHELL="msys2 {0}"
-              ;;
-            *)
-              BUILD_SHELL=bash
-              ;;
-          esac
-          echo "::set-output name=BUILD_SHELL::$BUILD_SHELL"
-
     - name: make
       env:
         BUILD_OS: ${{ runner.os }}
-      shell: ${{ steps.set_shell.outputs.BUILD_SHELL }}
+      shell: ${{ matrix.shell }}
       run: |
-          set -x
-          source $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
+          bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh
