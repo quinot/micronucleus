@@ -13,5 +13,6 @@ jobs:
       run: |
           sudo sh -c 'for arch in i386 armel armhf; do dpkg --add-architecture $arch;done'
           dpkg --print-foreign-architectures
-          sudo apt-get update
+          sudo apt-get update || true
+          sudo sh -c 'apt-get install libusb-dev $(for arch in i386 armel armhf;do echo libusb-dev:$arch;done)'
           apt-config dump |grep -i arch
