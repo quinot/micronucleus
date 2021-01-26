@@ -19,5 +19,10 @@ jobs:
       run: |
           dpkg --add-architecture ${{ matrix.arch }}
           apt-get update || true
-          apt-get install -y make libusb-dev:${{ matrix.arch }}
-          cd commandline && make CC="gcc -m${{ matrix.arch }}"
+          apt-get install -y make crossbuild-essential-${{ matrix.arch }} libusb-dev:${{ matrix.arch }}
+          case ${{ matrix.arch }} in
+            i386) triplet=i386-linux-gnu ;;
+            armel) triplet=arm-linux-gnueabi ;;
+            armhf) triplet=arm-linux-gnueabihg ;;
+          esac
+          cd commandline && make CC="${triplet}-gcc"
