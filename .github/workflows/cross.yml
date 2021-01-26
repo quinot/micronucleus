@@ -20,9 +20,4 @@ jobs:
           dpkg --add-architecture ${{ matrix.arch }}
           apt-get update || true
           apt-get install -y make libusb-dev:${{ matrix.arch }}
-          pwd
-          ls
-          cd $GITHUB_WORKSPACE
-          pwd
-          ls
-          make CC="gcc -m${{ matrix.arch }}"
+          cd commandline && make CC="gcc -m${{ matrix.arch }}"
