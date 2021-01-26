@@ -25,4 +25,5 @@ jobs:
             armel) triplet=arm-linux-gnueabi ;;
             armhf) triplet=arm-linux-gnueabihg ;;
           esac
+          ls /usr/bin/*gcc
           cd commandline && make CC="${triplet}-gcc"
