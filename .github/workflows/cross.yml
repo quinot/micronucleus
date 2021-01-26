@@ -1,0 +1,15 @@
+name: Experimental cross build CLI tools
+
+on:
+  push:
+    branches:
+        - crossbuild
+
+jobs:
+  build-cross:
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      run: |
+          dpkg --print-foreign-architectures
+          apt-config dump |grep -i arch
