@@ -11,5 +11,7 @@ jobs:
     steps:
     - name: test
       run: |
+          for arch in i386 armel armhf; do dpkg --add-architecture $arch;done
           dpkg --print-foreign-architectures
+          apt-get update
           apt-config dump |grep -i arch
