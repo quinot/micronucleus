@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: set up cross env
+    - name: Build for ${{ matrix.arch }}
       run: |
           dpkg --add-architecture ${{ matrix.arch }}
           apt-get update || true
@@ -23,7 +23,7 @@ jobs:
           case ${{ matrix.arch }} in
             i386) triplet=i686-linux-gnu ;;
             armel) triplet=arm-linux-gnueabi ;;
-            armhf) triplet=arm-linux-gnueabihg ;;
+            armhf) triplet=arm-linux-gnueabihf ;;
           esac
           ls /usr/bin/*gcc
           cd commandline && make CC="${triplet}-gcc"
