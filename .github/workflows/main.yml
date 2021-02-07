@@ -89,7 +89,7 @@ jobs:
       env:
         BUILD_OS: ${{ runner.os }}
       run: |
-          bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh ${{ matrix.arch }}
+          bash -x $GITHUB_WORKSPACE/.github/workflows/build-pkg.sh ${{ matrix.target }}
 
     - name: Branch head release
       uses: johnwbyrd/update-release@v1.0.0
