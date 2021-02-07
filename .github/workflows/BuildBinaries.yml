@@ -8,6 +8,8 @@ name: BuildBinaries
 
 on:
   push:
+    branches:
+      - !crossbuild
     paths:
     - '**/comandline/library/**'
     - '**/comandline/micronucleus.c'
