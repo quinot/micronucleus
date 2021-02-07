@@ -38,17 +38,20 @@ jobs:
 
          # Linux cross
          - os: ubuntu-latest
+           container: debian:buster
            target: i386
            shell: bash
          - os: ubuntu-latest
+           container: debian:buster
            target: armel
            shell: bash
          - os: ubuntu-latest
+           container: debian:buster
            target: armhf
            shell: bash
 
     runs-on: ${{ matrix.os }}
-    container: debian:buster
+    container: ${{ matrix.container }}
     defaults:
       run:
         shell: ${{ matrix.shell }}
@@ -64,9 +67,9 @@ jobs:
     - name: install dependencies
       if: runner.os == 'Linux' && matrix.target != ''
       run: |
-          sudo dpkg --add-architecture ${{ matrix.target }}
-          sudo apt-get update || true
-          sudo apt-get install -y make crossbuild-essential-${{ matrix.target }} libusb-dev:${{ matrix.target }}
+          dpkg --add-architecture ${{ matrix.target }}
+          apt-get update || true
+          apt-get install -y make crossbuild-essential-${{ matrix.target }} libusb-dev:${{ matrix.target }}
 
     - uses: msys2/setup-msys2@v2
       with:
