@@ -107,6 +107,7 @@ jobs:
       uses: johnwbyrd/update-release@v1.0.0
       if: steps.make.outputs.RELEASE_TAG != ''
       with:
+        release: "Micronucleus ${{ steps.make.outputs.RELEASE_TAG }}"
         token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
         message: "Release build ${{ steps.make.outputs.RELEASE_TAG }}"
